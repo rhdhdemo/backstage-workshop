@@ -20,10 +20,10 @@ spec:
         gitlabGroup:
           title: Repo Owner
           type: string
-          description: GitLab Organization
-          default: summit-lab
+          description: GitHub Organization
+          default: rhdhdemo
           enum:
-            - summit-lab
+            - rhdhdemo
         description:
           title: Description
           type: string
@@ -69,11 +69,9 @@ spec:
         url: ./skeleton
         targetPath: ./source
         values:
-          git_host: gitlab-gitlab.apps.cluster-zgdlq.sandbox293.opentlc.com
-          gitlabGroup: ${{parameters.gitlabGroup}}
           repoName: ${{parameters.namespace}}-frontend
           owner: ${{parameters.owner}}
-          cluster_id: .apps.cluster-zgdlq.sandbox293.opentlc.com
+          cluster_id: .apps.cluster-zrgkp.zrgkp.sandbox1360.opentlc.com
           namespace: ${{parameters.namespace}}
           component_id: ${{parameters.namespace}}-poi-map-app
     - id: publishSource
@@ -82,7 +80,7 @@ spec:
       input:
         sourcePath: ./source
         description: ${{parameters.description}}
-        repoUrl: gitlab-gitlab.apps.cluster-zgdlq.sandbox293.opentlc.com?owner=${{parameters.gitlabGroup}}&repo=${{parameters.namespace}}-frontend
+        repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         defaultBranch: main
         protectDefaultBranch: false
         repoVisibility: public

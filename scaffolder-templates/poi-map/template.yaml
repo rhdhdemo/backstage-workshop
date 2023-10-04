@@ -11,131 +11,131 @@ metadata:
 spec:
   owner: rhdeveloper-workshop-authors
   type: service
-parameters:
-  - title: Provide information about the GitLab location
-    required:
-      - orgName
-    properties:
-      orgName:
-        title: Organization Name
-        type: string
-        description: GitHub Organization
-        default: rhdhdemo
-        enum:
-          - rhdhdemo
-      description:
-        title: Description
-        type: string
-        description: Help others understand what this component is for
-        default: Angular SPA for Points-of-Interest Map
-  - title: Provide information about the new component
-    required:
-      - namespace
-      - owner
-    properties:
-      namespace:
-        title: Namespace
-        type: string
-        description: Namespace
-        default: poi
-      owner:
-        title: Owner
-        type: string
-        description: Owner of the component
-        default: dev-user
-        enum:
-          - dev-user
-  - title: Provide Build Information
-    required:
-      - image_host
-      - image_tag
-    properties:
-      image_host:
-        title: Image Host
-        type: string
-        description: Host for storing image (defaults to openshift internal)
-        default: image-registry.openshift-image-registry.svc:5000
-      image_tag:
-        title: Image Tag
-        default: latest
-        type: string
-        description: Image tag to use for storing in the internal registry
-steps:
-  - id: templateSource
-    name: Generating the source code component
-    action: fetch:template
-    input:
-      url: ./skeleton
-      targetPath: ./source
-      values:
-        repoName: ${{parameters.namespace}}-frontend
-        owner: ${{parameters.owner}}
-        cluster_id: .apps.cluster-m2vkc.m2vkc.sandbox3174.opentlc.com
-        namespace: ${{parameters.namespace}}
-        component_id: ${{parameters.namespace}}-poi-map-app
-  - id: publishSource
-    name: Publishing to Source Code Repository
-    action: publish:github
-    input:
-      sourcePath: ./source
-      description: ${{parameters.description}}
-      repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName
-        }}
-      defaultBranch: main
-      protectDefaultBranch: false
-      repoVisibility: public
-  - id: registerSource
-    name: Registering the Source Code Component
-    action: catalog:register
-    input:
-      repoContentsUrl: ${{steps.publishSource.output.repoContentsUrl}}
-      catalogInfoPath: /catalog-info.yaml
-  - id: templateGitops
-    name: Generating the deployment resources and artefacts
-    action: fetch:template
-    input:
-      url: ./manifests
-      copyWithoutTemplating: []
-      values:
-        git_host: gitlab-gitlab.apps.cluster-zgdlq.sandbox293.opentlc.com
-        component_id: ${{parameters.namespace}}-poi-map-app
+  parameters:
+    - title: Provide information about the GitLab location
+      required:
+        - orgName
+      properties:
+        orgName:
+          title: Organization Name
+          type: string
+          description: GitHub Organization
+          default: rhdhdemo
+          enum:
+            - rhdhdemo
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this component is for
+          default: Angular SPA for Points-of-Interest Map
+    - title: Provide information about the new component
+      required:
+        - namespace
+        - owner
+      properties:
+        namespace:
+          title: Namespace
+          type: string
+          description: Namespace
+          default: poi
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          default: dev-user
+          enum:
+            - dev-user
+    - title: Provide Build Information
+      required:
+        - image_host
+        - image_tag
+      properties:
+        image_host:
+          title: Image Host
+          type: string
+          description: Host for storing image (defaults to openshift internal)
+          default: image-registry.openshift-image-registry.svc:5000
+        image_tag:
+          title: Image Tag
+          default: latest
+          type: string
+          description: Image tag to use for storing in the internal registry
+  steps:
+    - id: templateSource
+      name: Generating the source code component
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ./source
+        values:
+          repoName: ${{parameters.namespace}}-frontend
+          owner: ${{parameters.owner}}
+          cluster_id: .apps.cluster-m2vkc.m2vkc.sandbox3174.opentlc.com
+          namespace: ${{parameters.namespace}}
+          component_id: ${{parameters.namespace}}-poi-map-app
+    - id: publishSource
+      name: Publishing to Source Code Repository
+      action: publish:github
+      input:
+        sourcePath: ./source
         description: ${{parameters.description}}
-        destination: https://github.com/${{parameters.orgName}}/${{parameters.namespace}}-frontend-gitops.git
-        source_repository: https://github.com/${{parameters.orgName}}/${{parameters.namespace}}-frontend-gitops.git
-        repository_name: ${{parameters.namespace}}-frontend
-        git_owner: ${{parameters.orgName}}
-        cluster: .apps.cluster-zgdlq.sandbox293.opentlc.com
-        namespace: ${{parameters.namespace}}
-        image_host: ${{parameters.image_host}}
-        image_name: ${{parameters.namespace}}/poi-map-app
-        image_tag: ${{parameters.image_tag}}
-      targetPath: ./tenant-gitops
-  - id: publishGitops
-    name: Publishing to Deployment Resource Repository
-    action: publish:github
-    input:
-      repoUrl: github.com?owner=${{parameters.orgName}}&repo=${{parameters.namespace}}-frontend-gitops
-      title: gitops resources for ${{parameters.namespace}}-poi-map-app
-      description: gitops resources for ${{parameters.namespace}}-poi-map-app
-      sourcePath: ./tenant-gitops
-      defaultBranch: main
-      protectDefaultBranch: false
-      repoVisibility: public
-  - id: createArgoResources
-    name: Create ArgoCD Resources
-    action: argocd:create-resources
-    input:
-      appName: ${{parameters.namespace}}-poi-map-app-bootstrap
-      argoInstance: main
-      namespace: poi
-      repoUrl: https://gitlab-gitlab.apps.cluster-zgdlq.sandbox293.opentlc.com/${{parameters.gitlabGroup}}/${{parameters.namespace}}-frontend-gitops.git
-      path: argocd/
-output:
-  links:
-    - title: Source Code Repository
-      url: ${{steps.publishSource.output.remoteUrl}}
-    - title: Pipeline status
-      url: https://console-openshift-console.apps.cluster-zgdlq.sandbox293.opentlc.com/dev-pipelines/ns/${{parameters.namespace}}/
-    - title: Open Component in catalog
-      icon: catalog
-      entityRef: ${{steps.registerSource.output.entityRef}}
+        repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName
+          }}
+        defaultBranch: main
+        protectDefaultBranch: false
+        repoVisibility: public
+    - id: registerSource
+      name: Registering the Source Code Component
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{steps.publishSource.output.repoContentsUrl}}
+        catalogInfoPath: /catalog-info.yaml
+    - id: templateGitops
+      name: Generating the deployment resources and artefacts
+      action: fetch:template
+      input:
+        url: ./manifests
+        copyWithoutTemplating: []
+        values:
+          git_host: gitlab-gitlab.apps.cluster-zgdlq.sandbox293.opentlc.com
+          component_id: ${{parameters.namespace}}-poi-map-app
+          description: ${{parameters.description}}
+          destination: https://github.com/${{parameters.orgName}}/${{parameters.namespace}}-frontend-gitops.git
+          source_repository: https://github.com/${{parameters.orgName}}/${{parameters.namespace}}-frontend-gitops.git
+          repository_name: ${{parameters.namespace}}-frontend
+          git_owner: ${{parameters.orgName}}
+          cluster: .apps.cluster-zgdlq.sandbox293.opentlc.com
+          namespace: ${{parameters.namespace}}
+          image_host: ${{parameters.image_host}}
+          image_name: ${{parameters.namespace}}/poi-map-app
+          image_tag: ${{parameters.image_tag}}
+        targetPath: ./tenant-gitops
+    - id: publishGitops
+      name: Publishing to Deployment Resource Repository
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=${{parameters.orgName}}&repo=${{parameters.namespace}}-frontend-gitops
+        title: gitops resources for ${{parameters.namespace}}-poi-map-app
+        description: gitops resources for ${{parameters.namespace}}-poi-map-app
+        sourcePath: ./tenant-gitops
+        defaultBranch: main
+        protectDefaultBranch: false
+        repoVisibility: public
+    - id: createArgoResources
+      name: Create ArgoCD Resources
+      action: argocd:create-resources
+      input:
+        appName: ${{parameters.namespace}}-poi-map-app-bootstrap
+        argoInstance: main
+        namespace: poi
+        repoUrl: https://gitlab-gitlab.apps.cluster-zgdlq.sandbox293.opentlc.com/${{parameters.gitlabGroup}}/${{parameters.namespace}}-frontend-gitops.git
+        path: argocd/
+  output:
+    links:
+      - title: Source Code Repository
+        url: ${{steps.publishSource.output.remoteUrl}}
+      - title: Pipeline status
+        url: https://console-openshift-console.apps.cluster-zgdlq.sandbox293.opentlc.com/dev-pipelines/ns/${{parameters.namespace}}/
+      - title: Open Component in catalog
+        icon: catalog
+        entityRef: ${{steps.registerSource.output.entityRef}}

@@ -79,7 +79,7 @@ spec:
       input:
         sourcePath: ./source
         description: ${{parameters.description}}
-        repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
+        repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{parameters.namespace}}-frontend
         defaultBranch: main
         protectDefaultBranch: false
         repoVisibility: public
@@ -96,7 +96,7 @@ spec:
         url: ./manifests
         copyWithoutTemplating: []
         values:
-          git_host: gitlab-gitlab.apps.cluster-zgdlq.sandbox293.opentlc.com
+          git_host: github.com
           component_id: ${{parameters.namespace}}-poi-map-app
           description: ${{parameters.description}}
           destination: https://github.com/${{parameters.orgName}}/${{parameters.namespace}}-frontend-gitops.git
@@ -127,7 +127,7 @@ spec:
         appName: ${{parameters.namespace}}-poi-map-app-bootstrap
         argoInstance: main
         namespace: poi
-        repoUrl: https://gitlab-gitlab.apps.cluster-zgdlq.sandbox293.opentlc.com/${{parameters.gitlabGroup}}/${{parameters.namespace}}-frontend-gitops.git
+        repoUrl: https://github.com/${{parameters.orgName}}/${{parameters.namespace}}-frontend-gitops.git
         path: argocd/
   output:
     links:

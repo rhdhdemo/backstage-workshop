@@ -79,8 +79,7 @@ spec:
       input:
         sourcePath: ./source
         description: ${{parameters.description}}
-        repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName
-          }}
+        repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         defaultBranch: main
         protectDefaultBranch: false
         repoVisibility: public

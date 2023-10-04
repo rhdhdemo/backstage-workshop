@@ -1,3 +1,16 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: poi-map-template
+  title: Angular SPA for Points-of-Interest Map
+  description: creates the angular spa for the workshop
+  tags:
+    - typescript
+    - angular
+    - workshop
+spec:
+  owner: rhdeveloper-workshop-authors
+  type: service
 parameters:
   - title: Provide information about the GitLab location
     required:

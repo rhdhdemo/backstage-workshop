@@ -12,6 +12,8 @@ metadata:
     backstage.io/techdocs-ref: url:https://${{values.git_host}}/${{values.orgName}}/${{values.repoName}}
     backstage.io/source-location: url:https://${{values.git_host}}/${{values.orgName}}/${{values.repoName}}
     janus-idp.io/tekton-enabled: 'true'
+    github.com/project-slug: ${{values.orgName}}/${{values.repoName}}
+    quay.io/repository-slug: ${{values.orgName}}/${{values.repoName}}
   tags:
     - typescript
     - angular

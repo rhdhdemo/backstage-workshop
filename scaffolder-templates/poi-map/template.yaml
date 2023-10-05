@@ -73,6 +73,9 @@ spec:
           cluster_id: .apps.cluster-m2vkc.m2vkc.sandbox3174.opentlc.com
           namespace: ${{parameters.namespace}}
           component_id: ${{parameters.namespace}}-poi-map-app
+          orgName: ${{parameters.orgName}}
+          git_host: github.com
+
     - id: publishSource
       name: Publishing to Source Code Repository
       action: publish:github
@@ -125,7 +128,7 @@ spec:
       action: argocd:create-resources
       input:
         appName: ${{parameters.namespace}}-poi-map-app-bootstrap
-        argoInstance: main
+        argoInstance: poi-argocd
         namespace: poi
         repoUrl: https://github.com/${{parameters.orgName}}/${{parameters.namespace}}-frontend-gitops.git
         path: argocd/
